@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bạn Nhỏ Thông Thái - Khám Phá Công Nghệ</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+      .game-container {
+        background: #ffffff;
+        border-radius: 25px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        max-width: 650px;
+        width: 100%;
+        padding: 30px;
+        text-align: center;
+        border: 5px solid #ffd166;
+      }
+      h1 {
+        color: #ff6b6b;
+        font-size: 28px;
+        margin-top: 0;
+      }
+      .progress {
+        background: #f1f3f5;
+        border-radius: 15px;
+        height: 18px;
+        margin: 20px 0;
+        overflow: hidden;
+      }
+      .progress-bar {
+        background: #06d6a0;
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+      .stats {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        color: #495057;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+      .question-box {
+        background: #f8f9fa;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 2px dashed #4ecdc4;
+      }
+      .question-text {
+        font-size: 22px;
+        color: #2b2d42;
+        font-weight: bold;
+        margin: 0;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .option-btn {
+        background: #ffffff;
+        border: 3px solid #118ab2;
+        border-radius: 15px;
+        padding: 15px 20px;
+        font-size: 18px;
+        color: #073b4c;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+      }
+      .option-btn:hover:not(:disabled) {
+        background: #e0fbfc;
+        transform: translateY(-2px);
+      }
+      .option-btn.correct {
+        background: #06d6a0;
+        border-color: #06d6a0;
+        color: white;
+      }
+      .option-btn.wrong {
+        background: #ef476f;
+        border-color: #ef476f;
+        color: white;
+      }
+      .option-btn:disabled {
+        cursor: default;
+      }
+      .feedback {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+        min-height: 30px;
+      }
+      .next-btn,
+      .restart-btn {
+        background: #ff9f1c;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 15px 35px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0 5px 0 #e07a00;
+        display: none;
+      }
+      .next-btn:active,
+      .restart-btn:active {
+        transform: translateY(3px);
+        box-shadow: 0 2px 0 #e07a00;
+      }
+      .result-screen {
+        display: none;
+      }
+      .score-circle {
+        width: 150px;
+        height: 150px;
+        background: #ffd166;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        font-size: 36px;
+        font-weight: bold;
+        color: #073b4c;
+        border: 6px solid #ff9f1c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <h1>🌟 BẠN NHỎ THÔNG THÁI 🌟</h1>
+
+      <div id="quiz-screen">
+        <div class="stats">
+          <span id="question-number">Câu 1 / 10</span>
+          <span id="score-display">Điểm: 0 ⭐</span>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="question-box">
+          <p class="question-text" id="question-text">Đang tải câu hỏi...</p>
+        </div>
+
+        <div class="options" id="options-container"></div>
+
+        <div class="feedback" id="feedback"></div>
+        <button class="next-btn" id="next-btn" onclick="nextQuestion()">
+          Câu tiếp theo ➡️
+        </button>
+      </div>
+
+      <div class="result-screen" id="result-screen">
+        <h2>🎉 CHÚC MỪNG BÉ ĐÃ HOÀN THÀNH! 🎉</h2>
+        <div class="score-circle" id="final-score">10/10</div>
+        <p
+          id="result-message"
+          style="font-size: 20px; color: #2b2d42; font-weight: bold"
+        ></p>
+        <button
+          class="restart-btn"
+          id="restart-btn"
+          style="display: inline-block"
+          onclick="restartGame()"
+        >
+          Chơi lại từ đầu 🔄
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const quizData = [
+        {
+          question:
+            "Câu 1: Trường Tiểu học và THCS Tân Phước có các bạn học sinh từ khối lớp mấy đến khối lớp mấy?",
+          options: [
+            "A. Chỉ có khối mẫu giáo",
+            "B. Từ lớp 1 đến lớp 9",
+            "C. Chỉ có khối Trung học phổ thông",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "Câu 2: Ở trường, cô giáo và ba mẹ thường dùng ứng dụng nào để nhắn tin và trao đổi thông tin hằng ngày?",
+          options: [
+            "A. Nhóm Zalo của lớp",
+            "B. Trò chơi điện tử",
+            "C. Nghe đài phát thanh",
+          ],
+          correct: 0,
+        },
+        {
+          question:
+            "Câu 3: Các em học sinh lớp 1 mới vào trường được học tập với máy tính nhờ mô hình thú vị nào ở lớp?",
+          options: [
+            "A. Mô hình chạy đua ngoài sân trường",
+            "B. Mô hình 'Trạm xoay vòng' ngay tại lớp",
+            "C. Mô hình ngủ trưa",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "Câu 4: Các bạn nhỏ lớp 1 cảm thấy thế nào khi được học các bài học có hình ảnh và âm thanh sinh động trên máy tính?",
+          options: [
+            "A. Cảm thấy buồn ngủ",
+            "B. Cảm thấy sợ hãi",
+            "C. Cực kỳ thích thú và hào hứng",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "Câu 5: Để vào bài học trên máy tính thật nhanh mà không cần gõ chữ khó khăn, các bé lớp 1 dùng cái gì?",
+          options: [
+            "A. Nhờ thầy hiệu trưởng mở hộ",
+            "B. Quét thẻ mã QR cá nhân",
+            "C. Nhập mật khẩu dài bằng bàn phím",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "Câu 6: Khi làm bài tập trên máy tính, nếu gặp câu hỏi khó hoặc làm sai, phần mềm thông minh sẽ có gì để giúp các bé?",
+          options: [
+            "A. Tắt máy tính luôn",
+            "B. Phát ra âm thanh gợi ý để bé tự sửa lại",
+            "C. Phạt đứng góc lớp",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "Câu 7: Các anh chị học sinh lớn ở cấp THCS (từ lớp 6 đến lớp 9) thường học tập trực tuyến ở nhà qua hệ thống nào?",
+          options: [
+            "A. Hệ thống học tập số LMS",
+            "B. Xem tivi hoạt hình",
+            "C. Nghe băng cassette",
+          ],
+          correct: 0,
+        },
+        {
+          question:
+            "Câu 8: Nhờ có thầy cô tối ưu hóa việc học số, tỷ lệ học sinh hoàn thành bài tập đúng hạn đạt mức cao là bao nhiêu?",
+          options: [
+            "A. Chỉ được 10% thôi",
+            "B. Đạt hơn 91%",
+            "C. Không ai làm bài cả",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "Câu 9: Sau khi được học tập với các bài giảng số vui nhộn, mức độ hài lòng của phụ huynh và học sinh đạt kết quả thế nào?",
+          options: [
+            "A. Đạt mức rất cao (từ 4 đến 5 sao)",
+            "B. Ai cũng chê bai",
+            "C. Không ai quan tâm",
+          ],
+          correct: 0,
+        },
+        {
+          question:
+            "Câu 10: Việc học tập kết hợp công nghệ và máy tính thông minh mang lại điều gì cho các bạn nhỏ ở trường Tân Phước?",
+          options: [
+            "A. Làm các bé mệt mỏi hơn",
+            "B. Tốn thời gian vui chơi",
+            "C. Giúp các bé vừa học vừa chơi thật vui vẻ và giỏi giang hơn",
+          ],
+          correct: 2,
+        },
+      ];
+
+      let currentQuestion = 0;
+      let score = 0;
+
+      const questionNumberEl = document.getElementById("question-number");
+      const scoreDisplayEl = document.getElementById("score-display");
+      const progressBarEl = document.getElementById("progress-bar");
+      const questionTextEl = document.getElementById("question-text");
+      const optionsContainerEl = document.getElementById("options-container");
+      const feedbackEl = document.getElementById("feedback");
+      const nextBtnEl = document.getElementById("next-btn");
+      const quizScreenEl = document.getElementById("quiz-screen");
+      const resultScreenEl = document.getElementById("result-screen");
+
+      function loadQuestion() {
+        const currentData = quizData[currentQuestion];
+        questionNumberEl.innerText = `Câu ${currentQuestion + 1} / ${quizData.length}`;
+        progressBarEl.style.width = `${(currentQuestion / quizData.length) * 100}%`;
+        questionTextEl.innerText = currentData.question;
+
+        optionsContainerEl.innerHTML = "";
+        feedbackEl.innerText = "";
+        nextBtnEl.style.display = "none";
+
+        currentData.options.forEach((option, index) => {
+          const button = document.createElement("button");
+          button.innerText = option;
+          button.classList.add("option-btn");
+          button.onclick = () => selectAnswer(index, button);
+          optionsContainerEl.appendChild(button);
+        });
+      }
+
+      function selectAnswer(selectedIndex, selectedBtn) {
+        const currentData = quizData[currentQuestion];
+        const allButtons = optionsContainerEl.querySelectorAll(".option-btn");
+
+        allButtons.forEach((btn) => (btn.disabled = true));
+
+        if (selectedIndex === currentData.correct) {
+          selectedBtn.classList.add("correct");
+          feedbackEl.innerText = "🎉 Hoan hô! Bé giỏi quá!";
+          feedbackEl.style.color = "#06d6a0";
+          score++;
+          scoreDisplayEl.innerText = `Điểm: ${score} ⭐`;
+        } else {
+          selectedBtn.classList.add("wrong");
+          allButtons[currentData.correct].classList.add("correct");
+          feedbackEl.innerText = "💡 Chưa đúng rồi, xem đáp án màu xanh nhé!";
+          feedbackEl.style.color = "#ef476f";
+        }
+
+        progressBarEl.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
+        nextBtnEl.style.display = "inline-block";
+      }
+
+      function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+          loadQuestion();
+        } else {
+          showResult();
+        }
+      }
+
+      function showResult() {
+        quizScreenEl.style.display = "none";
+        resultScreenEl.style.display = "block";
+        document.getElementById("final-score").innerText =
+          `${score} / ${quizData.length}`;
+
+        const resultMsg = document.getElementById("result-message");
+        if (score >= 8) {
+          resultMsg.innerText =
+            "Xuất sắc! Bé đúng là Siêu Sao Công Nghệ trường Tân Phước! 🏆";
+        } else if (score >= 5) {
+          resultMsg.innerText =
+            "Giỏi lắm! Bé đã hiểu rất nhiều về công nghệ rồi đấy! 👏";
+        } else {
+          resultMsg.innerText =
+            "Cố lên nhé! Bé hãy chơi lại để giành thật nhiều sao nào! 💪";
+        }
+      }
+
+      function restartGame() {
+        currentQuestion = 0;
+        score = 0;
+        scoreDisplayEl.innerText = `Điểm: 0 ⭐`;
+        quizScreenEl.style.display = "block";
+        resultScreenEl.style.display = "none";
+        loadQuestion();
+      }
+
+      loadQuestion();
+    </script>
+  </body>
+</html>
