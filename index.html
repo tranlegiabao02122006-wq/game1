@@ -3,185 +3,341 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bạn Nhỏ Thông Thái - Khám Phá Công Nghệ</title>
+    <title>Toán Lớp 1: Khám Phá Số Từ 6 Đến 10</title>
     <style>
+      :root {
+        --primary: #4361ee;
+        --primary-light: #4895ef;
+        --success: #2ec4b6;
+        --danger: #e71d36;
+        --warning: #ff9f1c;
+        --dark: #2b2d42;
+        --light: #f8f9fa;
+        --card-bg: #ffffff;
+      }
+
       * {
         box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
+
       body {
-        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
         min-height: 100vh;
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 15px;
       }
-      .game-container {
-        background: #ffffff;
-        border-radius: 25px;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        max-width: 650px;
+
+      .dashboard-container {
+        background: var(--card-bg);
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        max-width: 750px;
         width: 100%;
-        padding: 30px;
-        text-align: center;
-        border: 5px solid #ffd166;
-      }
-      h1 {
-        color: #ff6b6b;
-        font-size: 28px;
-        margin-top: 0;
-      }
-      .progress {
-        background: #f1f3f5;
-        border-radius: 15px;
-        height: 18px;
-        margin: 20px 0;
         overflow: hidden;
+        border: 3px solid rgba(255, 255, 255, 0.9);
       }
-      .progress-bar {
-        background: #06d6a0;
-        height: 100%;
-        width: 0%;
-        transition: width 0.3s ease;
-      }
-      .stats {
+
+      /* Header */
+      .dash-header {
+        background: linear-gradient(
+          90deg,
+          var(--primary),
+          var(--primary-light)
+        );
+        color: white;
+        padding: 20px 30px;
         display: flex;
         justify-content: space-between;
-        font-weight: bold;
-        color: #495057;
-        margin-bottom: 10px;
-        font-size: 18px;
+        align-items: center;
       }
-      .question-box {
-        background: #f8f9fa;
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 20px;
-        border: 2px dashed #4ecdc4;
-      }
-      .question-text {
-        font-size: 22px;
-        color: #2b2d42;
-        font-weight: bold;
+
+      .dash-header h1 {
         margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
       }
-      .options {
+
+      .badge-info {
+        background: rgba(255, 255, 255, 0.25);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* Khung nội dung chính */
+      .content-body {
+        padding: 30px;
+      }
+
+      /* Thống kê & Tiến trình */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        background: var(--light);
+        padding: 12px 20px;
+        border-radius: 14px;
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        border-left: 5px solid var(--primary);
       }
-      .option-btn {
+
+      .stat-card span:first-child {
+        font-size: 12px;
+        color: #6c757d;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .stat-card span:last-child {
+        font-size: 20px;
+        color: var(--dark);
+        font-weight: 800;
+      }
+
+      .progress-track {
+        background: #e9ecef;
+        height: 12px;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        background: var(--success);
+        height: 100%;
+        width: 0%;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Vùng câu hỏi */
+      .question-panel {
+        background: #f8faff;
+        border: 2px dashed #cbd5e1;
+        border-radius: 18px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        text-align: center;
+      }
+
+      .question-title {
+        font-size: 20px;
+        color: var(--dark);
+        font-weight: 800;
+        line-height: 1.5;
+        margin: 0 0 12px 0;
+      }
+
+      .visual-box {
+        font-size: 36px;
+        letter-spacing: 6px;
         background: #ffffff;
-        border: 3px solid #118ab2;
-        border-radius: 15px;
+        padding: 14px 20px;
+        border-radius: 14px;
+        display: inline-block;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e2e8f0;
+        line-height: 1.4;
+      }
+
+      /* Các lựa chọn */
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .opt-btn {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 14px;
         padding: 15px 20px;
         font-size: 18px;
-        color: #073b4c;
-        font-weight: 600;
+        color: var(--dark);
+        font-weight: 700;
         cursor: pointer;
-        transition: all 0.2s;
         text-align: left;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
-      .option-btn:hover:not(:disabled) {
-        background: #e0fbfc;
+
+      .opt-btn:hover:not(:disabled) {
+        border-color: var(--primary-light);
+        background: #f0f4ff;
         transform: translateY(-2px);
       }
-      .option-btn.correct {
-        background: #06d6a0;
-        border-color: #06d6a0;
-        color: white;
+
+      .opt-btn.correct {
+        background: #e6fcf5 !important;
+        border-color: var(--success) !important;
+        color: #0ca678 !important;
       }
-      .option-btn.wrong {
-        background: #ef476f;
-        border-color: #ef476f;
-        color: white;
+
+      .opt-btn.wrong {
+        background: #fff5f5 !important;
+        border-color: var(--danger) !important;
+        color: #e03131 !important;
       }
-      .option-btn:disabled {
+
+      .opt-btn:disabled {
         cursor: default;
       }
-      .feedback {
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 20px;
-        min-height: 30px;
+
+      /* Phản hồi & Nút tiếp theo */
+      .footer-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #edf2f7;
+        padding-top: 20px;
+        min-height: 65px;
       }
-      .next-btn,
-      .restart-btn {
-        background: #ff9f1c;
+
+      .feedback-text {
+        font-weight: 700;
+        font-size: 16px;
+        max-width: 65%;
+      }
+
+      .action-btn {
+        background: var(--primary);
         color: white;
         border: none;
-        border-radius: 15px;
-        padding: 15px 35px;
-        font-size: 20px;
-        font-weight: bold;
+        border-radius: 12px;
+        padding: 12px 26px;
+        font-size: 16px;
+        font-weight: 700;
         cursor: pointer;
-        margin-top: 20px;
-        box-shadow: 0 5px 0 #e07a00;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
         display: none;
       }
-      .next-btn:active,
-      .restart-btn:active {
-        transform: translateY(3px);
-        box-shadow: 0 2px 0 #e07a00;
+
+      .action-btn:hover {
+        background: #3a0ca3;
       }
-      .result-screen {
+
+      .action-btn:active {
+        transform: scale(0.98);
+      }
+
+      /* Màn hình kết quả */
+      .result-view {
+        text-align: center;
+        padding: 25px 10px;
         display: none;
       }
-      .score-circle {
-        width: 150px;
-        height: 150px;
-        background: #ffd166;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 20px auto;
+
+      .result-icon {
+        font-size: 68px;
+        margin-bottom: 10px;
+      }
+
+      .score-badge {
         font-size: 36px;
-        font-weight: bold;
-        color: #073b4c;
-        border: 6px solid #ff9f1c;
+        font-weight: 800;
+        color: var(--primary);
+        margin: 15px 0;
+      }
+
+      .result-desc {
+        font-size: 17px;
+        color: #4a5568;
+        margin-bottom: 25px;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 600px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        .dash-header {
+          flex-direction: column;
+          gap: 10px;
+          text-align: center;
+        }
+        .visual-box {
+          font-size: 28px;
+          letter-spacing: 3px;
+        }
+        .footer-action {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+        .feedback-text {
+          max-width: 100%;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="game-container">
-      <h1>🌟 BẠN NHỎ THÔNG THÁI 🌟</h1>
-
-      <div id="quiz-screen">
-        <div class="stats">
-          <span id="question-number">Câu 1 / 10</span>
-          <span id="score-display">Điểm: 0 ⭐</span>
-        </div>
-        <div class="progress">
-          <div class="progress-bar" id="progress-bar"></div>
-        </div>
-
-        <div class="question-box">
-          <p class="question-text" id="question-text">Đang tải câu hỏi...</p>
-        </div>
-
-        <div class="options" id="options-container"></div>
-
-        <div class="feedback" id="feedback"></div>
-        <button class="next-btn" id="next-btn" onclick="nextQuestion()">
-          Câu tiếp theo ➡️
-        </button>
+    <div class="dashboard-container">
+      <!-- Header -->
+      <div class="dash-header">
+        <h1>🎈 TOÁN LỚP 1: SỐ TỪ 6 ĐẾN 10</h1>
+        <div class="badge-info" id="current-stage">Vui Học Cùng Bé</div>
       </div>
 
-      <div class="result-screen" id="result-screen">
-        <h2>🎉 CHÚC MỪNG BÉ ĐÃ HOÀN THÀNH! 🎉</h2>
-        <div class="score-circle" id="final-score">10/10</div>
-        <p
-          id="result-message"
-          style="font-size: 20px; color: #2b2d42; font-weight: bold"
-        ></p>
+      <!-- Màn hình làm trắc nghiệm -->
+      <div class="content-body" id="quiz-view">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span>Câu hỏi hiện tại</span>
+            <span id="q-counter">01 / 10</span>
+          </div>
+          <div class="stat-card" style="border-left-color: var(--warning)">
+            <span>Sao thưởng của bé</span>
+            <span id="score-counter">0 ⭐</span>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-bar"></div>
+        </div>
+
+        <div class="question-panel">
+          <p class="question-title" id="q-text">Đang tải câu hỏi...</p>
+          <div class="visual-box" id="q-visual"></div>
+        </div>
+
+        <div class="options-grid" id="options-box"></div>
+
+        <div class="footer-action">
+          <div class="feedback-text" id="feedback-msg"></div>
+          <button class="action-btn" id="next-step-btn" onclick="proceedNext()">
+            Câu tiếp theo ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Màn hình tổng kết kết quả -->
+      <div class="content-body result-view" id="result-view">
+        <div class="result-icon">🏆</div>
+        <h2>HOAN HÔ BÉ ĐÃ HOÀN THÀNH!</h2>
+        <div class="score-badge" id="final-score-text">10 / 10 ⭐</div>
+        <p class="result-desc" id="result-comment-text">
+          Bé thật giỏi! Bé đã nhận biết và đếm rất chính xác các số từ 6 đến 10.
+        </p>
         <button
-          class="restart-btn"
-          id="restart-btn"
+          class="action-btn"
           style="display: inline-block"
-          onclick="restartGame()"
+          onclick="resetQuizSession()"
         >
           Chơi lại từ đầu 🔄
         </button>
@@ -189,202 +345,179 @@
     </div>
 
     <script>
-      const quizData = [
+      // Bộ 10 câu hỏi Toán lớp 1: Nhận biết số từ 6 đến 10
+      const quizDatabase = [
         {
-          question:
-            "Câu 1: Trường Tiểu học và THCS Tân Phước có các bạn học sinh từ khối lớp mấy đến khối lớp mấy?",
-          options: [
-            "A. Chỉ có khối mẫu giáo",
-            "B. Từ lớp 1 đến lớp 9",
-            "C. Chỉ có khối Trung học phổ thông",
-          ],
-          correct: 1,
+          q: "Câu 1: Bé hãy đếm xem có tất cả bao nhiêu quả táo đỏ nhé?",
+          visual: "🍎 🍎 🍎 🍎 🍎 🍎",
+          opts: ["A. 6 quả táo", "B. 5 quả táo", "C. 7 quả táo"],
+          ans: 0,
+          note: "Có tất cả 6 quả táo đỏ (đọc là sáu).",
         },
         {
-          question:
-            "Câu 2: Ở trường, cô giáo và ba mẹ thường dùng ứng dụng nào để nhắn tin và trao đổi thông tin hằng ngày?",
-          options: [
-            "A. Nhóm Zalo của lớp",
-            "B. Trò chơi điện tử",
-            "C. Nghe đài phát thanh",
-          ],
-          correct: 0,
+          q: "Câu 2: Trong dãy số tăng dần từ 6 đến 10, số nào đứng ngay sau số 7?",
+          visual: "6 ➔ 7 ➔ ❓ ➔ 9 ➔ 10",
+          opts: ["A. Số 6", "B. Số 8", "C. Số 9"],
+          ans: 1,
+          note: "Đếm theo thứ tự: 6, 7, 8, 9, 10 nên số 8 đứng ngay sau số 7.",
         },
         {
-          question:
-            "Câu 3: Các em học sinh lớp 1 mới vào trường được học tập với máy tính nhờ mô hình thú vị nào ở lớp?",
-          options: [
-            "A. Mô hình chạy đua ngoài sân trường",
-            "B. Mô hình 'Trạm xoay vòng' ngay tại lớp",
-            "C. Mô hình ngủ trưa",
-          ],
-          correct: 1,
+          q: "Câu 3: Có bao nhiêu ngôi sao vàng đang tỏa sáng trên bầu trời?",
+          visual: "⭐ ⭐ ⭐ ⭐ ⭐<br>⭐ ⭐ ⭐ ⭐",
+          opts: ["A. 8 ngôi sao", "B. 10 ngôi sao", "C. 9 ngôi sao"],
+          ans: 2,
+          note: "Hàng trên có 5 ngôi sao, hàng dưới có 4 ngôi sao. Tất cả là 9 ngôi sao.",
         },
         {
-          question:
-            "Câu 4: Các bạn nhỏ lớp 1 cảm thấy thế nào khi được học các bài học có hình ảnh và âm thanh sinh động trên máy tính?",
-          options: [
-            "A. Cảm thấy buồn ngủ",
-            "B. Cảm thấy sợ hãi",
-            "C. Cực kỳ thích thú và hào hứng",
-          ],
-          correct: 2,
+          q: "Câu 4: Số nào được đọc là 'Mười' và gồm hai chữ số ghép lại?",
+          visual: "🔢 6️⃣  7️⃣  8️⃣  9️⃣  🔟",
+          opts: ["A. Số 10", "B. Số 8", "C. Số 9"],
+          ans: 0,
+          note: "Số 10 đọc là 'mười', gồm chữ số 1 đứng trước và chữ số 0 đứng sau.",
         },
         {
-          question:
-            "Câu 5: Để vào bài học trên máy tính thật nhanh mà không cần gõ chữ khó khăn, các bé lớp 1 dùng cái gì?",
-          options: [
-            "A. Nhờ thầy hiệu trưởng mở hộ",
-            "B. Quét thẻ mã QR cá nhân",
-            "C. Nhập mật khẩu dài bằng bàn phím",
-          ],
-          correct: 1,
+          q: "Câu 5: Đếm số chú cá nhỏ đang bơi dưới nước nào bé ơi!",
+          visual: "🐠 🐠 🐠 🐠<br>🐠 🐠 🐠",
+          opts: ["A. 6 chú cá", "B. 7 chú cá", "C. 8 chú cá"],
+          ans: 1,
+          note: "Có tất cả 7 chú cá (4 chú ở trên và 3 chú ở dưới).",
         },
         {
-          question:
-            "Câu 6: Khi làm bài tập trên máy tính, nếu gặp câu hỏi khó hoặc làm sai, phần mềm thông minh sẽ có gì để giúp các bé?",
-          options: [
-            "A. Tắt máy tính luôn",
-            "B. Phát ra âm thanh gợi ý để bé tự sửa lại",
-            "C. Phạt đứng góc lớp",
-          ],
-          correct: 1,
+          q: "Câu 6: Trong các số sau đây, số nào là số LỚN NHẤT?",
+          visual: "⚖️  6   —   9   —   7",
+          opts: ["A. Số 6", "B. Số 7", "C. Số 9"],
+          ans: 2,
+          note: "Trong các số 6, 9, 7 thì 9 là số lớn nhất.",
         },
         {
-          question:
-            "Câu 7: Các anh chị học sinh lớn ở cấp THCS (từ lớp 6 đến lớp 9) thường học tập trực tuyến ở nhà qua hệ thống nào?",
-          options: [
-            "A. Hệ thống học tập số LMS",
-            "B. Xem tivi hoạt hình",
-            "C. Nghe băng cassette",
-          ],
-          correct: 0,
+          q: "Câu 7: Bé hãy đếm xem trên bàn có bao nhiêu chiếc bánh kem?",
+          visual: "🧁 🧁 🧁 🧁 🧁<br>🧁 🧁 🧁 🧁 🧁",
+          opts: ["A. 9 chiếc bánh", "B. 10 chiếc bánh", "C. 8 chiếc bánh"],
+          ans: 1,
+          note: "Mỗi hàng có 5 chiếc bánh, 2 hàng có tất cả 10 chiếc bánh kem.",
         },
         {
-          question:
-            "Câu 8: Nhờ có thầy cô tối ưu hóa việc học số, tỷ lệ học sinh hoàn thành bài tập đúng hạn đạt mức cao là bao nhiêu?",
-          options: [
-            "A. Chỉ được 10% thôi",
-            "B. Đạt hơn 91%",
-            "C. Không ai làm bài cả",
-          ],
-          correct: 1,
+          q: "Câu 8: Số 8 là số đứng liền trước của số nào?",
+          visual: "❓ ➔ 8 ➔ ❓",
+          opts: ["A. Số 7", "B. Số 9", "C. Số 10"],
+          ans: 1,
+          note: "Số 8 đứng ngay trước số 9 (8 rồi đến 9).",
         },
         {
-          question:
-            "Câu 9: Sau khi được học tập với các bài giảng số vui nhộn, mức độ hài lòng của phụ huynh và học sinh đạt kết quả thế nào?",
-          options: [
-            "A. Đạt mức rất cao (từ 4 đến 5 sao)",
-            "B. Ai cũng chê bai",
-            "C. Không ai quan tâm",
-          ],
-          correct: 0,
+          q: "Câu 9: Nhóm hình nào dưới đây có số lượng bằng 8?",
+          visual: "🍓🍓🍓🍓🍓🍓🍓🍓",
+          opts: ["A. 8 quả dâu tây", "B. 6 quả dâu tây", "C. 10 quả dâu tây"],
+          ans: 0,
+          note: "Đếm từ trái sang phải có đúng 8 quả dâu tây.",
         },
         {
-          question:
-            "Câu 10: Việc học tập kết hợp công nghệ và máy tính thông minh mang lại điều gì cho các bạn nhỏ ở trường Tân Phước?",
-          options: [
-            "A. Làm các bé mệt mỏi hơn",
-            "B. Tốn thời gian vui chơi",
-            "C. Giúp các bé vừa học vừa chơi thật vui vẻ và giỏi giang hơn",
-          ],
-          correct: 2,
+          q: "Câu 10: Trong các số từ 6 đến 10, số nào là số BÉ NHẤT?",
+          visual: "🎯 6 , 7 , 8 , 9 , 10",
+          opts: ["A. Số 10", "B. Số 7", "C. Số 6"],
+          ans: 2,
+          note: "Số 6 đứng đầu dãy từ 6 đến 10 nên 6 là số bé nhất.",
         },
       ];
 
-      let currentQuestion = 0;
-      let score = 0;
+      let currentIdx = 0;
+      let earnedPoints = 0;
 
-      const questionNumberEl = document.getElementById("question-number");
-      const scoreDisplayEl = document.getElementById("score-display");
+      const qCounterEl = document.getElementById("q-counter");
+      const scoreCounterEl = document.getElementById("score-counter");
       const progressBarEl = document.getElementById("progress-bar");
-      const questionTextEl = document.getElementById("question-text");
-      const optionsContainerEl = document.getElementById("options-container");
-      const feedbackEl = document.getElementById("feedback");
-      const nextBtnEl = document.getElementById("next-btn");
-      const quizScreenEl = document.getElementById("quiz-screen");
-      const resultScreenEl = document.getElementById("result-screen");
+      const qTextEl = document.getElementById("q-text");
+      const qVisualEl = document.getElementById("q-visual");
+      const optionsBoxEl = document.getElementById("options-box");
+      const feedbackMsgEl = document.getElementById("feedback-msg");
+      const nextStepBtnEl = document.getElementById("next-step-btn");
 
-      function loadQuestion() {
-        const currentData = quizData[currentQuestion];
-        questionNumberEl.innerText = `Câu ${currentQuestion + 1} / ${quizData.length}`;
-        progressBarEl.style.width = `${(currentQuestion / quizData.length) * 100}%`;
-        questionTextEl.innerText = currentData.question;
+      const quizViewEl = document.getElementById("quiz-view");
+      const resultViewEl = document.getElementById("result-view");
 
-        optionsContainerEl.innerHTML = "";
-        feedbackEl.innerText = "";
-        nextBtnEl.style.display = "none";
+      function renderQuestion() {
+        let currentItem = quizDatabase[currentIdx];
+        let formattedNum =
+          currentIdx + 1 < 10 ? `0${currentIdx + 1}` : `${currentIdx + 1}`;
+        qCounterEl.innerText = `${formattedNum} / ${quizDatabase.length}`;
+        progressBarEl.style.width = `${(currentIdx / quizDatabase.length) * 100}%`;
+        qTextEl.innerText = currentItem.q;
+        qVisualEl.innerHTML = currentItem.visual;
 
-        currentData.options.forEach((option, index) => {
-          const button = document.createElement("button");
-          button.innerText = option;
-          button.classList.add("option-btn");
-          button.onclick = () => selectAnswer(index, button);
-          optionsContainerEl.appendChild(button);
+        optionsBoxEl.innerHTML = "";
+        feedbackMsgEl.innerText = "";
+        nextStepBtnEl.style.display = "none";
+
+        currentItem.opts.forEach((optionText, optIndex) => {
+          let btn = document.createElement("button");
+          btn.className = "opt-btn";
+          btn.innerHTML = `<span>${optionText}</span>`;
+          btn.onclick = () => evaluateAnswer(optIndex, btn);
+          optionsBoxEl.appendChild(btn);
         });
       }
 
-      function selectAnswer(selectedIndex, selectedBtn) {
-        const currentData = quizData[currentQuestion];
-        const allButtons = optionsContainerEl.querySelectorAll(".option-btn");
+      function evaluateAnswer(selectedIndex, selectedButton) {
+        let currentItem = quizDatabase[currentIdx];
+        let allOptButtons = optionsBoxEl.querySelectorAll(".opt-btn");
 
-        allButtons.forEach((btn) => (btn.disabled = true));
+        allOptButtons.forEach((b) => (b.disabled = true));
 
-        if (selectedIndex === currentData.correct) {
-          selectedBtn.classList.add("correct");
-          feedbackEl.innerText = "🎉 Hoan hô! Bé giỏi quá!";
-          feedbackEl.style.color = "#06d6a0";
-          score++;
-          scoreDisplayEl.innerText = `Điểm: ${score} ⭐`;
+        if (selectedIndex === currentItem.ans) {
+          selectedButton.classList.add("correct");
+          feedbackMsgEl.innerText = `✨ Đúng rồi! ${currentItem.note}`;
+          feedbackMsgEl.style.color = "var(--success)";
+          earnedPoints++;
+          scoreCounterEl.innerText = `${earnedPoints} ⭐`;
         } else {
-          selectedBtn.classList.add("wrong");
-          allButtons[currentData.correct].classList.add("correct");
-          feedbackEl.innerText = "💡 Chưa đúng rồi, xem đáp án màu xanh nhé!";
-          feedbackEl.style.color = "#ef476f";
+          selectedButton.classList.add("wrong");
+          allOptButtons[currentItem.ans].classList.add("correct");
+          feedbackMsgEl.innerText = `💡 Chưa đúng rồi! ${currentItem.note}`;
+          feedbackMsgEl.style.color = "var(--danger)";
         }
 
-        progressBarEl.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
-        nextBtnEl.style.display = "inline-block";
+        progressBarEl.style.width = `${((currentIdx + 1) / quizDatabase.length) * 100}%`;
+        nextStepBtnEl.style.display = "block";
       }
 
-      function nextQuestion() {
-        currentQuestion++;
-        if (currentQuestion < quizData.length) {
-          loadQuestion();
+      function proceedNext() {
+        currentIdx++;
+        if (currentIdx < quizDatabase.length) {
+          renderQuestion();
         } else {
-          showResult();
-        }
-      }
-
-      function showResult() {
-        quizScreenEl.style.display = "none";
-        resultScreenEl.style.display = "block";
-        document.getElementById("final-score").innerText =
-          `${score} / ${quizData.length}`;
-
-        const resultMsg = document.getElementById("result-message");
-        if (score >= 8) {
-          resultMsg.innerText =
-            "Xuất sắc! Bé đúng là Siêu Sao Công Nghệ trường Tân Phước! 🏆";
-        } else if (score >= 5) {
-          resultMsg.innerText =
-            "Giỏi lắm! Bé đã hiểu rất nhiều về công nghệ rồi đấy! 👏";
-        } else {
-          resultMsg.innerText =
-            "Cố lên nhé! Bé hãy chơi lại để giành thật nhiều sao nào! 💪";
+          showFinalDashboard();
         }
       }
 
-      function restartGame() {
-        currentQuestion = 0;
-        score = 0;
-        scoreDisplayEl.innerText = `Điểm: 0 ⭐`;
-        quizScreenEl.style.display = "block";
-        resultScreenEl.style.display = "none";
-        loadQuestion();
+      function showFinalDashboard() {
+        quizViewEl.style.display = "none";
+        resultViewEl.style.display = "block";
+        document.getElementById("final-score-text").innerText =
+          `${earnedPoints} / ${quizDatabase.length} ⭐`;
+
+        let commentText = document.getElementById("result-comment-text");
+        if (earnedPoints >= 9) {
+          commentText.innerText =
+            "Xuất sắc quá bé ơi! Bé đã đếm và nhận biết thành thạo tất cả các số từ 6 đến 10!";
+        } else if (earnedPoints >= 6) {
+          commentText.innerText =
+            "Bé làm khá tốt rồi! Hãy thử chơi lại một lần nữa để đạt trọn vẹn 10 ngôi sao nhé!";
+        } else {
+          commentText.innerText =
+            "Cố lên bé nhé! Bé hãy đếm thật chậm từng hình và thử sức lại từ đầu nào!";
+        }
       }
 
-      loadQuestion();
+      function resetQuizSession() {
+        currentIdx = 0;
+        earnedPoints = 0;
+        scoreCounterEl.innerText = `0 ⭐`;
+        quizViewEl.style.display = "block";
+        resultViewEl.style.display = "none";
+        renderQuestion();
+      }
+
+      // Khởi chạy câu hỏi đầu tiên
+      renderQuestion();
     </script>
   </body>
 </html>
